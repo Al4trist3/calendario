@@ -9,7 +9,7 @@ defmodule CalendarioWeb.EventoLive.FormComponent do
     <div>
       <.header>
         <%= @title %>
-        <:subtitle>Ingrese los datos del evento a crear.</:subtitle>
+        <:subtitle>Ingrese los datos del evento.</:subtitle>
       </.header>
 
       <.simple_form

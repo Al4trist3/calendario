@@ -1,11 +1,6 @@
 <.header>
   Evento <%= @evento.id %>
   <:subtitle>Este es un evento dentro del calendario.</:subtitle>
-  <:actions>
-    <.link patch={~p"/eventos/#{@evento}/show/edit"} phx-click={JS.push_focus()}>
-      <.button>Editar evento</.button>
-    </.link>
-  </:actions>
 </.header>
 
 <.list>
