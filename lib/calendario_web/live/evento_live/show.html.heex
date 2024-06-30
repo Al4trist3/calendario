@@ -1,0 +1,30 @@
+<.header>
+  Evento <%= @evento.id %>
+  <:subtitle>Este es un evento dentro del calendario.</:subtitle>
+  <:actions>
+    <.link patch={~p"/eventos/#{@evento}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Editar evento</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Titulo"><%= @evento.titulo %></:item>
+  <:item title="Descripcion"><%= @evento.descripcion %></:item>
+  <:item title="Duracion"><%= @evento.duracion %></:item>
+  <:item title="Fecha"><%= @evento.fecha %></:item>
+  <:item title="Inicio"><%= @evento.inicio %></:item>
+</.list>
+
+<.back navigate={~p"/eventos"}>Volver al calendario</.back>
+
+<.modal :if={@live_action == :edit} id="evento-modal" show on_cancel={JS.patch(~p"/eventos/#{@evento}")}>
+  <.live_component
+    module={CalendarioWeb.EventoLive.FormComponent}
+    id={@evento.id}
+    title={@page_title}
+    action={@live_action}
+    evento={@evento}
+    patch={~p"/eventos/#{@evento}"}
+  />
+</.modal>

@@ -1,0 +1,53 @@
+<.header>
+  Seleccione el dia en el calendario y gestione eventos
+  <hr>
+  <:actions>
+    <.link patch={~p"/eventos/new"}>
+      <.button>Nuevo evento</.button>
+    </.link>
+  </:actions>
+  <.live_component
+    module={CalendarioWeb.EventoLive.CalendarioComponent}
+    id="calendario"
+  />
+  <hr>
+</.header>
+
+
+
+<.table
+  id="eventos"
+  rows={@streams.eventos}
+  row_click={fn {_id, evento} -> JS.navigate(~p"/eventos/#{evento}") end}
+>
+  <:col :let={{_id, evento}} label="Titulo"><%= evento.titulo %></:col>
+  <:col :let={{_id, evento}} label="Duracion"><%= evento.duracion %></:col>
+  <:col :let={{_id, evento}} label="Fecha"><%= evento.fecha %></:col>
+  <:col :let={{_id, evento}} label="Inicio"><%= evento.inicio %></:col>
+  <:action :let={{_id, evento}}>
+    <div class="sr-only">
+      <.link navigate={~p"/eventos/#{evento}"}>Mostrar</.link>
+    </div>
+    <.link patch={~p"/eventos/#{evento}/edit"}>Editar</.link>
+  </:action>
+  <:action :let={{id, evento}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: evento.id}) |> hide("##{id}")}
+      data-confirm="Esta seguro de borrar el evento?"
+    >
+      Borrar
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="evento-modal" show on_cancel={JS.patch(~p"/eventos")}>
+  <.live_component
+    module={CalendarioWeb.EventoLive.FormComponent}
+    id={@evento.id || :new}
+    title={@page_title}
+    action={@live_action}
+    evento={@evento}
+    date={@date}
+    patch={~p"/eventos"}
+  />
+</.modal>
